@@ -3,16 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Us | Maa Enterprises Cyber Cafe & Online Service Center</title>
-  <meta name="description" content="Contact Maa Enterprises Cyber Cafe in Mahalpar, Bihar Sharif. Phone, WhatsApp, location details, and business hours.">
+  <title>Contact Us — Maa Enterprises Cyber Cafe & Online Service Center | Bihar Sharif</title>
+  <meta name="description" content="Contact Maa Enterprises at Mahalpar, Bihar Sharif, Nalanda. Verified phone, WhatsApp, location details, and business hours.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .contact-info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+    }
+    .contact-detail-row {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+    }
+    .contact-detail-row:last-child {
+      margin-bottom: 0;
+    }
+    .contact-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      color: var(--text-highlight);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-detail-text strong {
+      display: block;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+    .contact-detail-text p, .contact-detail-text address {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      font-style: normal;
+    }
+    .contact-form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      box-shadow: var(--shadow-md);
+    }
+    @media (max-width: 900px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Top Bar -->
+  <!-- Top Announcement Bar -->
   <aside class="top-bar" aria-label="Business Quick Contact">
     <div class="container top-bar__container">
       <div class="top-bar__info">
@@ -22,7 +82,7 @@
         </span>
         <span class="top-bar__item">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-          Business Hours: 10:00 AM – 06:00 PM
+          Hours: 10:00 AM – 06:00 PM
         </span>
       </div>
       <div class="top-bar__actions">
@@ -35,185 +95,243 @@
   </aside>
 
   <!-- Site Header -->
-  <header class="site-header">
-    <div class="container site-header__container">
-      <a href="index.html" class="brand" aria-label="Maa Enterprises Home">
-        <span class="brand__logo-mark" aria-hidden="true">ME</span>
-        <span class="brand__text-group">
-          <span class="brand__title">Maa Enterprises</span>
-          <span class="brand__subtitle">Cyber Cafe &amp; Online Service Center</span>
-        </span>
+  <header id="siteHeader" class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand" aria-label="Maa Enterprises Homepage">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <span class="brand-name">Maa Enterprises</span>
+          <span class="brand-badge">Cyber Cafe & Online Service Center</span>
+        </div>
       </a>
 
-      <input type="checkbox" id="nav-toggle" class="nav-toggle-input" aria-label="Toggle navigation menu">
-      <label for="nav-toggle" class="nav-toggle-btn" aria-hidden="true">
-        <span class="nav-toggle-bar"></span>
-        <span class="nav-toggle-bar"></span>
-        <span class="nav-toggle-bar"></span>
-      </label>
-
-      <nav class="site-nav" aria-label="Primary Navigation">
-        <ul class="site-nav__list">
-          <li class="site-nav__item"><a href="index.html" class="site-nav__link">Home</a></li>
-          <li class="site-nav__item"><a href="services.html" class="site-nav__link">Services</a></li>
-          <li class="site-nav__item"><a href="track-request.html" class="site-nav__link">Track Service</a></li>
-          <li class="site-nav__item"><a href="resume-maker.html" class="site-nav__link">Resume Maker</a></li>
-          <li class="site-nav__item"><a href="trade-request.html" class="site-nav__link">Trade Request</a></li>
-          <li class="site-nav__item"><a href="contact.html" class="site-nav__link is-active" aria-current="page">Contact</a></li>
-        </ul>
-        <div class="site-nav__cta">
-          <a href="contact.html" class="btn btn--primary btn--sm">Visit Center</a>
-        </div>
+      <!-- Desktop Navigation Menu -->
+      <nav class="desktop-nav" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="track-request.html" class="nav-link">Track Application</a>
+        <a href="trade-request.html" class="nav-link">Trade & Bulk</a>
+        <a href="resume-maker.html" class="nav-link">Resume Maker</a>
+        <a href="contact.html" class="nav-link active" aria-current="page">Contact</a>
       </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <a href="login.html" class="btn btn-admin header-admin-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Admin Portal</span>
+        </a>
+        <a href="https://wa.me/919693125648" target="_blank" rel="noopener" class="btn btn-whatsapp header-wa-btn" aria-label="Chat on WhatsApp">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.301-.15-1.781-.878-2.057-.978-.276-.1-.477-.15-.678.15-.201.3-.777.978-.952 1.178-.176.2-.351.226-.652.075-.301-.15-1.272-.469-2.423-1.495-.896-.798-1.502-1.785-1.677-2.086-.176-.301-.019-.464.132-.614.136-.135.301-.351.452-.527.15-.176.201-.301.301-.502.101-.201.05-.376-.025-.527-.075-.15-.678-1.633-.929-2.235-.244-.587-.493-.507-.678-.517-.176-.01-.376-.01-.577-.01-.201 0-.527.075-.803.376-.276.301-1.054 1.03-1.054 2.513 0 1.482 1.08 2.912 1.23 3.113.15.201 2.124 3.243 5.146 4.549.719.311 1.281.497 1.719.636.722.23 1.378.197 1.9-.079.582-.309 1.781-.728 2.032-1.431.251-.703.251-1.305.176-1.431-.075-.126-.276-.201-.577-.351z"></path>
+          </svg>
+          <span>WhatsApp</span>
+        </a>
+        <button id="navToggle" class="mobile-menu-btn" aria-label="Open Navigation Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main id="main-content">
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
-      <div class="container">
-        <ol class="breadcrumb">
-          <li class="breadcrumb__item"><a href="index.html" class="breadcrumb__link">Home</a></li>
-          <li class="breadcrumb__item" aria-current="page">Contact</li>
-        </ol>
+  <!-- Mobile Navigation Drawer -->
+  <div id="mobileMenu" class="mobile-menu-drawer">
+    <div class="mobile-menu-header">
+      <div class="brand-info">
+        <span class="brand-name">Maa Enterprises</span>
+        <span class="brand-badge">Cyber Cafe & Online Services</span>
       </div>
+      <button id="navClose" class="mobile-menu-close" aria-label="Close navigation menu">&times;</button>
+    </div>
+    <nav class="mobile-nav-links">
+      <a href="index.html" class="mobile-nav-link"><span>Home</span></a>
+      <a href="services.html" class="mobile-nav-link"><span>Services</span></a>
+      <a href="track-request.html" class="mobile-nav-link"><span>Track Application</span></a>
+      <a href="trade-request.html" class="mobile-nav-link"><span>Trade & Bulk</span></a>
+      <a href="resume-maker.html" class="mobile-nav-link"><span>Resume Maker</span></a>
+      <a href="contact.html" class="mobile-nav-link active" aria-current="page"><span>Contact</span></a>
+      <a href="login.html" class="mobile-nav-link mobile-admin-btn"><span>Admin Portal</span></a>
     </nav>
+    <div class="mobile-menu-footer">
+      <a href="https://wa.me/919693125648" target="_blank" class="btn btn-whatsapp btn-block">
+        Chat on WhatsApp (9693125648)
+      </a>
+    </div>
+  </div>
+  <div id="navOverlay" class="nav-overlay"></div>
 
-    <!-- Page Hero -->
-    <section class="page-hero">
+  <main id="main-content">
+    <!-- Page Hero Banner -->
+    <section class="hero-section" style="padding: 3.5rem 0 2.5rem; text-align: center;">
       <div class="container">
-        <div class="page-hero__content">
-          <div class="badge badge--primary page-hero__badge">Contact &amp; Location</div>
-          <h1 class="page-hero__title">Visit Or Connect With Maa Enterprises</h1>
-          <p class="page-hero__lead">
-            Reach out for queries regarding online application deadlines, required certificate procedures, document printing, or counter consultation.
-          </p>
+        <div class="badge badge-cyan" style="margin: 0 auto 1rem auto; display: inline-flex;">
+          Direct Customer Service & Location
+        </div>
+        <h1 style="font-size: clamp(1.875rem, 3.5vw, 2.5rem); font-weight: 800; margin-bottom: 0.75rem;">
+          Contact &amp; Visit Our Center
+        </h1>
+        <p style="color: var(--text-secondary); max-width: 680px; margin: 0 auto; font-size: 1.05rem;">
+          Visit Maa Enterprises at Mahalpar, Bihar Sharif for counter assistance, urgent form submissions, certificate processing, or connect directly via phone and WhatsApp.
+        </p>
+      </div>
+    </section>
+
+    <!-- Main Contact Section -->
+    <section class="section" style="padding-top: 1rem;">
+      <div class="container">
+        <div class="contact-grid">
+          
+          <!-- Left: Verified Business Info Card -->
+          <div class="contact-info-card">
+            <h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1.5rem; color: #ffffff;">
+              Center Details
+            </h2>
+
+            <div class="contact-detail-row">
+              <div class="contact-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              </div>
+              <div class="contact-detail-text">
+                <strong>Physical Address</strong>
+                <address>
+                  Maa Enterprises<br>
+                  Mahalpar, Bihar Sharif<br>
+                  Nalanda, Bihar - 803101
+                </address>
+              </div>
+            </div>
+
+            <div class="contact-detail-row">
+              <div class="contact-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              </div>
+              <div class="contact-detail-text">
+                <strong>Proprietor</strong>
+                <p>Rajesh Kumar</p>
+              </div>
+            </div>
+
+            <div class="contact-detail-row">
+              <div class="contact-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+              <div class="contact-detail-text">
+                <strong>Working Hours</strong>
+                <p>10:00 AM – 06:00 PM<br>(Monday to Saturday)</p>
+              </div>
+            </div>
+
+            <div class="contact-detail-row">
+              <div class="contact-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </div>
+              <div class="contact-detail-text">
+                <strong>Phone &amp; WhatsApp</strong>
+                <p><a href="tel:9693125648" style="color: var(--text-highlight); font-weight: 600;">9693125648</a></p>
+              </div>
+            </div>
+
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-card); display: flex; flex-direction: column; gap: 0.75rem;">
+              <a href="https://wa.me/919693125648" target="_blank" rel="noopener" class="btn btn-whatsapp btn-block">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M17.472 14.382c-.301-.15-1.781-.878-2.057-.978-.276-.1-.477-.15-.678.15-.201.3-.777.978-.952 1.178-.176.2-.351.226-.652.075-.301-.15-1.272-.469-2.423-1.495-.896-.798-1.502-1.785-1.677-2.086-.176-.301-.019-.464.132-.614.136-.135.301-.351.452-.527.15-.176.201-.301.301-.502.101-.201.05-.376-.025-.527-.075-.15-.678-1.633-.929-2.235-.244-.587-.493-.507-.678-.517-.176-.01-.376-.01-.577-.01-.201 0-.527.075-.803.376-.276.301-1.054 1.03-1.054 2.513 0 1.482 1.08 2.912 1.23 3.113.15.201 2.124 3.243 5.146 4.549.719.311 1.281.497 1.719.636.722.23 1.378.197 1.9-.079.582-.309 1.781-.728 2.032-1.431.251-.703.251-1.305.176-1.431-.075-.126-.276-.201-.577-.351z"></path></svg>
+                <span>Direct WhatsApp Chat (9693125648)</span>
+              </a>
+              <a href="tel:9693125648" class="btn btn-secondary btn-block">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <span>Call Center Desk</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Interactive Contact & Inquiry Form -->
+          <div class="contact-form-card">
+            <h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem; color: #ffffff;">
+              Send an Online Inquiry
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+              Need assistance with an online form, exam application, or document verification? Fill out the details below.
+            </p>
+
+            <form id="contactInquiryForm" novalidate>
+              <div class="form-group">
+                <label for="inquiryName" class="form-label required">Full Name</label>
+                <input type="text" id="inquiryName" class="form-input" placeholder="Enter your full name" required>
+                <span class="error-message"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="inquiryMobile" class="form-label required">Mobile Number</label>
+                <input type="tel" id="inquiryMobile" class="form-input" placeholder="10-digit mobile number" maxlength="10" required>
+                <span class="error-message"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="inquiryCategory" class="form-label required">Service Category</label>
+                <select id="inquiryCategory" class="form-select" required>
+                  <option value="" disabled selected>-- Select Category --</option>
+                  <option value="Government Jobs & Recruitment">Government Jobs & Recruitment</option>
+                  <option value="College & School Admissions">College & School Admissions</option>
+                  <option value="Identity & Legal">Identity & Legal (PAN / Voter / UIDAI)</option>
+                  <option value="Certificates">Certificates (RTPS / Income / Caste / Domicile)</option>
+                  <option value="Banking & Bill Payments">Banking & Bill Payments (Electricity / Recharge)</option>
+                  <option value="Business Services">Business Services (MSME / GST / Typing)</option>
+                  <option value="Other General Inquiry">Other Online Inquiry</option>
+                </select>
+                <span class="error-message"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="inquiryMessage" class="form-label required">Your Message / Question</label>
+                <textarea id="inquiryMessage" class="form-textarea" rows="4" placeholder="Describe the form, exam name, or service you need help with..." required></textarea>
+                <span class="error-message"></span>
+              </div>
+
+              <button type="submit" id="inquirySubmitBtn" class="btn btn-primary btn-block btn-lg">
+                <span>Send Message &amp; Connect on WhatsApp</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </button>
+            </form>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <!-- Contact Details & Form Section -->
-    <section class="section section--surface">
+    <!-- Visit Guidelines Section -->
+    <section class="section" style="padding-top: 1rem;">
       <div class="container">
-        <div class="layout-split">
-          
-          <!-- Contact Info Cards Column -->
-          <div class="layout-split__sidebar">
-            
-            <div class="card card--padded contact-info-card">
-              <div class="contact-info-card__icon-box">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-              </div>
-              <h2 class="contact-info-card__title">Center Location</h2>
-              <address class="contact-info-card__address">
-                <p><strong>Maa Enterprises</strong></p>
-                <p>Mahalpar, Bihar Sharif</p>
-                <p>Nalanda, Bihar - 803101</p>
-              </address>
-              <p class="contact-info-card__sub">Located conveniently in Mahalpar for in-person document processing.</p>
-            </div>
-
-            <div class="card card--padded contact-info-card">
-              <div class="contact-info-card__icon-box">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-              </div>
-              <h2 class="contact-info-card__title">Phone &amp; WhatsApp</h2>
-              <p class="contact-info-card__value"><a href="tel:9693125648">9693125648</a></p>
-              <p class="contact-info-card__sub">Available during operating hours for general service inquiries.</p>
-            </div>
-
-            <div class="card card--padded contact-info-card">
-              <div class="contact-info-card__icon-box">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-              </div>
-              <h2 class="contact-info-card__title">Working Hours</h2>
-              <p class="contact-info-card__value">10:00 AM – 06:00 PM</p>
-              <p class="contact-info-card__sub">Monday to Saturday</p>
-            </div>
-
-            <div class="card card--padded contact-info-card">
-              <div class="contact-info-card__icon-box">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              </div>
-              <h2 class="contact-info-card__title">Proprietor</h2>
-              <p class="contact-info-card__value">Rajesh Kumar</p>
-              <p class="contact-info-card__sub">Maa Enterprises Cyber Cafe &amp; Online Service Center</p>
-            </div>
-
-          </div>
-
-          <!-- Contact Inquiry Form Foundation Column -->
-          <div class="layout-split__main">
-            <div class="card card--padded">
-              <h2 class="card__section-title">Send a General Inquiry</h2>
-              <p class="card__text">
-                Have a question regarding form requirements or processing timelines? Fill out the details below.
+        <div class="card" style="padding: 2rem; background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-lg);">
+          <h3 style="font-size: 1.2rem; font-weight: 700; color: #ffffff; margin-bottom: 1rem;">
+            Helpful Guidelines for Center Visitors
+          </h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+            <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+              <span style="color: var(--accent-emerald); font-weight: 700;">✓</span>
+              <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">
+                Carry original marksheet, certificate copies, and photo ID for live verification before online submission.
               </p>
-
-              <form class="form-grid" action="#" method="get" onsubmit="return false;">
-                <div class="form-group">
-                  <label for="contact-name" class="form-label">Full Name <span class="text-danger">*</span></label>
-                  <input type="text" id="contact-name" name="name" class="form-input" placeholder="Enter your full name" required>
-                </div>
-
-                <div class="form-group">
-                  <label for="contact-phone" class="form-label">Mobile Number <span class="text-danger">*</span></label>
-                  <input type="tel" id="contact-phone" name="phone" class="form-input" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
-                </div>
-
-                <div class="form-group">
-                  <label for="contact-category" class="form-label">Service Domain</label>
-                  <select id="contact-category" name="category" class="form-select">
-                    <option value="">Select a service category...</option>
-                    <option value="jobs">Government Jobs &amp; Recruitment</option>
-                    <option value="admissions">College &amp; School Admissions</option>
-                    <option value="identity">Identity &amp; Legal Services</option>
-                    <option value="certificates">Certificates &amp; Verification</option>
-                    <option value="utility">Banking &amp; Bill Payments</option>
-                    <option value="printing">Business &amp; Document Printing</option>
-                    <option value="other">Other Online Inquiry</option>
-                  </select>
-                </div>
-
-                <div class="form-group">
-                  <label for="contact-message" class="form-label">Inquiry Details <span class="text-danger">*</span></label>
-                  <textarea id="contact-message" name="message" rows="4" class="form-textarea" placeholder="Specify exam name, certificate type, or your question..." required></textarea>
-                </div>
-
-                <div class="notice-box notice-box--neutral">
-                  <svg class="icon notice-box__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                  <p class="notice-box__text">
-                    Form transmission and dynamic cloud storage will connect in an upcoming release. For immediate assistance, please call <strong>9693125648</strong> or visit our Mahalpar counter.
-                  </p>
-                </div>
-
-                <div class="form-actions">
-                  <button type="button" class="btn btn--primary btn--lg">Submit Inquiry</button>
-                  <a href="tel:9693125648" class="btn btn--outline btn--lg">Call Center Directly</a>
-                </div>
-              </form>
             </div>
-
-            <!-- In-Person Visit Advice Card -->
-            <div class="card card--padded visit-card">
-              <h3 class="visit-card__title">Guidelines for In-Person Visitors</h3>
-              <ul class="checklist">
-                <li class="checklist__item">
-                  <svg class="icon icon--success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                  <span>Carry original certificates and educational qualification marksheets for precise data verification.</span>
-                </li>
-                <li class="checklist__item">
-                  <svg class="icon icon--success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                  <span>Ensure your registered mobile phone is fully charged to receive one-time passwords (OTPs) during live portal registration.</span>
-                </li>
-                <li class="checklist__item">
-                  <svg class="icon icon--success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                  <span>Visit between 10:00 AM and 06:00 PM (Monday through Saturday) for dedicated counter processing.</span>
-                </li>
-              </ul>
+            <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+              <span style="color: var(--accent-emerald); font-weight: 700;">✓</span>
+              <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">
+                Keep your registered mobile phone with you to provide instant one-time passwords (OTPs) during online portal registration.
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+              <span style="color: var(--accent-emerald); font-weight: 700;">✓</span>
+              <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">
+                Visit between 10:00 AM and 06:00 PM for dedicated counter assistance by Rajesh Kumar.
+              </p>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -221,67 +339,149 @@
 
   <!-- Site Footer -->
   <footer class="site-footer">
-    <div class="container site-footer__container">
-      <div class="site-footer__brand-col">
-        <a href="index.html" class="brand brand--footer">
-          <span class="brand__logo-mark" aria-hidden="true">ME</span>
-          <span class="brand__text-group">
-            <span class="brand__title">Maa Enterprises</span>
-            <span class="brand__subtitle">Cyber Cafe &amp; Online Service Center</span>
-          </span>
-        </a>
-        <p class="site-footer__about">
+    <div class="container footer-grid">
+      <div class="footer-brand-col">
+        <div class="brand footer-brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+          <div class="brand-info">
+            <span class="brand-name">Maa Enterprises</span>
+            <span class="brand-badge">Cyber Cafe & Online Service Center</span>
+          </div>
+        </div>
+        <p class="footer-about-text">
           Dedicated digital service center offering official form filling, online recruitment assistance, document formatting, and citizen service facilitation.
         </p>
-        <p class="site-footer__owner"><strong>Proprietor:</strong> Rajesh Kumar</p>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+          <strong>Proprietor:</strong> Rajesh Kumar
+        </p>
       </div>
 
-      <div class="site-footer__nav-col">
-        <h3 class="site-footer__heading">Quick Navigation</h3>
-        <ul class="site-footer__list">
+      <div class="footer-nav-col">
+        <h4 class="footer-heading">Quick Navigation</h4>
+        <ul class="footer-links">
           <li><a href="index.html">Home</a></li>
           <li><a href="services.html">Services Catalog</a></li>
-          <li><a href="track-request.html">Track Service Request</a></li>
-          <li><a href="resume-maker.html">Resume / Bio-Data Maker</a></li>
-          <li><a href="trade-request.html">Trade &amp; Bulk Request</a></li>
+          <li><a href="track-request.html">Track Application</a></li>
+          <li><a href="trade-request.html">Trade &amp; Bulk</a></li>
+          <li><a href="resume-maker.html">Resume Maker</a></li>
           <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="login.html">Admin Portal</a></li>
         </ul>
       </div>
 
-      <div class="site-footer__nav-col">
-        <h3 class="site-footer__heading">Service Domains</h3>
-        <ul class="site-footer__list">
+      <div class="footer-nav-col">
+        <h4 class="footer-heading">Service Domains</h4>
+        <ul class="footer-links">
           <li><a href="services.html">Government Job Applications</a></li>
           <li><a href="services.html">Admissions &amp; Counseling</a></li>
           <li><a href="services.html">State RTPS &amp; Certificates</a></li>
           <li><a href="services.html">Utility &amp; Electricity Payments</a></li>
-          <li><a href="services.html">Document Scanning &amp; Printing</a></li>
+          <li><a href="services.html">Business MSME &amp; Document Typing</a></li>
         </ul>
       </div>
 
-      <div class="site-footer__contact-col">
-        <h3 class="site-footer__heading">Center Address</h3>
-        <address class="site-footer__address">
+      <div class="footer-contact-col">
+        <h4 class="footer-heading">Center Address</h4>
+        <address class="footer-address">
           <p>Maa Enterprises</p>
           <p>Mahalpar, Bihar Sharif</p>
           <p>Nalanda, Bihar - 803101</p>
-          <p class="site-footer__contact-item"><strong>Phone / WhatsApp:</strong> <a href="tel:9693125648">9693125648</a></p>
-          <p class="site-footer__contact-item"><strong>Hours:</strong> 10:00 AM – 06:00 PM</p>
+          <p style="margin-top: 0.5rem;"><strong>Phone / WhatsApp:</strong> <a href="tel:9693125648" style="color: var(--text-highlight);">9693125648</a></p>
+          <p><strong>Hours:</strong> 10:00 AM – 06:00 PM</p>
         </address>
       </div>
     </div>
 
-    <div class="site-footer__bottom">
-      <div class="container site-footer__bottom-container">
-        <p class="site-footer__copyright">
-          &copy; 2026 Maa Enterprises Cyber Cafe &amp; Online Service Center. All rights reserved.
-        </p>
-        <p class="site-footer__disclaimer">
-          Independent facilitation center. Government portal fees and requirements are determined by respective official authorities.
-        </p>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-container">
+        <p>&copy; 2026 Maa Enterprises Cyber Cafe &amp; Online Service Center. All rights reserved.</p>
+        <p style="color: var(--text-muted); font-size: 0.8rem;">Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101</p>
       </div>
     </div>
   </footer>
 
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script type="module">
+    import { db, collection, addDoc, serverTimestamp, isFirebaseConfigured } from './js/firebase-config.js';
+    import { initAuthListener } from './js/auth.js';
+    import { showToast } from './js/app.js';
+
+    initAuthListener();
+
+    document.getElementById('contactInquiryForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('inquiryName').value.trim();
+      const mobile = document.getElementById('inquiryMobile').value.trim();
+      const category = document.getElementById('inquiryCategory').value;
+      const message = document.getElementById('inquiryMessage').value.trim();
+      const btn = document.getElementById('inquirySubmitBtn');
+
+      if (!name || name.length < 3) {
+        showToast('Please enter your full name (min 3 characters).', 'warning');
+        return;
+      }
+      if (!/^[6-9]\d{9}$/.test(mobile)) {
+        showToast('Please enter a valid 10-digit mobile number.', 'warning');
+        return;
+      }
+      if (!category) {
+        showToast('Please select a service category.', 'warning');
+        return;
+      }
+      if (!message || message.length < 5) {
+        showToast('Please write a brief description of your question.', 'warning');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Sending...';
+
+      const inquiryData = {
+        name,
+        phone: mobile,
+        category,
+        message,
+        createdAt: new Date().toISOString(),
+        status: 'New'
+      };
+
+      if (isFirebaseConfigured && db) {
+        try {
+          await addDoc(collection(db, 'inquiries'), {
+            ...inquiryData,
+            serverTimestamp: serverTimestamp()
+          });
+        } catch (err) {
+          console.warn('[Contact] Firestore save notice:', err.message);
+        }
+      }
+
+      try {
+        const localInquiries = JSON.parse(localStorage.getItem('maa_inquiries') || '[]');
+        localInquiries.unshift(inquiryData);
+        localStorage.setItem('maa_inquiries', JSON.stringify(localInquiries.slice(0, 50)));
+      } catch (err) {}
+
+      const whatsappText = encodeURIComponent(
+        "*NEW WEBSITE INQUIRY — MAA ENTERPRISES*\n\n" +
+        "👤 *Name:* " + name + "\n" +
+        "📱 *Mobile:* " + mobile + "\n" +
+        "📌 *Category:* " + category + "\n" +
+        "📝 *Question:* " + message + "\n\n" +
+        "_Sent from Maa Enterprises Website (Mahalpar, Bihar Sharif)_"
+      );
+
+      showToast('Opening WhatsApp chat with Maa Enterprises...', 'success');
+
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<span>Send Message & Connect on WhatsApp</span>';
+        window.open('https://wa.me/919693125648?text=' + whatsappText, '_blank');
+      }, 500);
+    });
+  </script>
 </body>
 </html>
