@@ -45,9 +45,9 @@ const firebaseConfig = {
   appId: "1:123456789012:web:abcdef1234567890abcdef"
 };
 
-let app;
-let auth;
-let db;
+let app = null;
+let auth = null;
+let db = null;
 let isFirebaseConfigured = false;
 
 try {
@@ -60,11 +60,39 @@ try {
   db = getFirestore(app);
   
   // Check if real config or placeholder
-  if (!firebaseConfig.apiKey.includes('Placeholder')) {
+  if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes('Placeholder')) {
     isFirebaseConfigured = true;
   }
 } catch (error) {
   console.warn("[Maa Enterprises] Firebase initialization notice (Operating in resilient offline/hybrid mode):", error.message);
+}
+
+// Attach to global window.FirebaseApp for unified access across all scripts
+if (typeof window !== 'undefined') {
+  window.FirebaseApp = {
+    app,
+    auth,
+    db,
+    isFirebaseConfigured,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    createUserWithEmailAndPassword,
+    sendPasswordResetEmail,
+    collection,
+    doc,
+    addDoc,
+    setDoc,
+    getDoc,
+    getDocs,
+    updateDoc,
+    deleteDoc,
+    query,
+    where,
+    orderBy,
+    limit,
+    serverTimestamp
+  };
 }
 
 // Export modular instances and SDK methods
