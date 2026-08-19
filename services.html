@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services Catalog | Maa Enterprises Cyber Cafe & Online Service Center</title>
+  <meta name="description" content="Browse service categories and application specifications available at Maa Enterprises Cyber Cafe, Mahalpar, Bihar Sharif.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <aside class="top-bar" aria-label="Business Quick Contact">
+    <div class="container top-bar__container">
+      <div class="top-bar__info">
+        <span class="top-bar__item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101
+        </span>
+        <span class="top-bar__item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          Business Hours: 10:00 AM – 06:00 PM
+        </span>
+      </div>
+      <div class="top-bar__actions">
+        <a href="tel:9693125648" class="top-bar__link">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          9693125648
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container site-header__container">
+      <a href="index.html" class="brand" aria-label="Maa Enterprises Home">
+        <span class="brand__logo-mark" aria-hidden="true">ME</span>
+        <span class="brand__text-group">
+          <span class="brand__title">Maa Enterprises</span>
+          <span class="brand__subtitle">Cyber Cafe &amp; Online Service Center</span>
+        </span>
+      </a>
+
+      <input type="checkbox" id="nav-toggle" class="nav-toggle-input" aria-label="Toggle navigation menu">
+      <label for="nav-toggle" class="nav-toggle-btn" aria-hidden="true">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </label>
+
+      <nav class="site-nav" aria-label="Primary Navigation">
+        <ul class="site-nav__list">
+          <li class="site-nav__item"><a href="index.html" class="site-nav__link">Home</a></li>
+          <li class="site-nav__item"><a href="services.html" class="site-nav__link is-active" aria-current="page">Services</a></li>
+          <li class="site-nav__item"><a href="track-request.html" class="site-nav__link">Track Service</a></li>
+          <li class="site-nav__item"><a href="resume-maker.html" class="site-nav__link">Resume Maker</a></li>
+          <li class="site-nav__item"><a href="trade-request.html" class="site-nav__link">Trade Request</a></li>
+          <li class="site-nav__item"><a href="contact.html" class="site-nav__link">Contact</a></li>
+        </ul>
+        <div class="site-nav__cta">
+          <a href="contact.html" class="btn btn--primary btn--sm">Visit Center</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb__item"><a href="index.html" class="breadcrumb__link">Home</a></li>
+          <li class="breadcrumb__item" aria-current="page">Services</li>
+        </ol>
+      </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero__content">
+          <div class="badge badge--primary page-hero__badge">Service Catalog</div>
+          <h1 class="page-hero__title">Online Services &amp; Application Facilitation</h1>
+          <p class="page-hero__lead">
+            Select a service category below to view required documents, processing procedures, and submission requirements.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catalog Control Foundation (Search & Category Filters) -->
+    <section class="section section--tight">
+      <div class="container">
+        <div class="catalog-controls">
+          <!-- Search UI Foundation -->
+          <div class="search-box">
+            <svg class="icon search-box__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="search" class="form-input search-box__input" placeholder="Search services by keyword or category..." aria-label="Search services">
+          </div>
+
+          <!-- Category Filter Foundation -->
+          <div class="filter-pills" role="toolbar" aria-label="Filter services by category">
+            <button type="button" class="filter-pill is-active">All Services</button>
+            <button type="button" class="filter-pill">Govt Jobs &amp; Recruitment</button>
+            <button type="button" class="filter-pill">Admissions &amp; Education</button>
+            <button type="button" class="filter-pill">Identity &amp; Legal</button>
+            <button type="button" class="filter-pill">Certificates</button>
+            <button type="button" class="filter-pill">Banking &amp; Bills</button>
+            <button type="button" class="filter-pill">Document &amp; Print</button>
+          </div>
+        </div>
+
+        <!-- Filter Notice / Architecture Status -->
+        <div class="notice-box">
+          <svg class="icon notice-box__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          <p class="notice-box__text">
+            Displaying core service architectures. Specific exam notifications, official forms, and processing guidelines are updated based on active government portal notifications.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Grid Section -->
+    <section class="section section--surface">
+      <div class="container">
+        <div class="grid grid--3" id="services-grid">
+          
+          <!-- Service Card 1 -->
+          <article class="service-card">
+            <div class="service-card__header">
+              <span class="badge badge--primary">Govt Jobs &amp; Recruitment</span>
+            </div>
+            <div class="service-card__body">
+              <h2 class="service-card__title">Central &amp; State Recruitment Application</h2>
+              <p class="service-card__desc">Complete online application submission, photo &amp; signature resizing to official portal dimensions, and fee processing.</p>
+              
+              <div class="service-card__specs">
+                <div class="spec-row">
+                  <span class="spec-row__label">Required Documents:</span>
+                  <span class="spec-row__value">Marksheets, Photo, ID Proof</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-row__label">Processing:</span>
+                  <span class="spec-row__value">Assisted Counter Processing</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-row__label">Portal Fees:</span>
+                  <span class="spec-row__value">As per official notification</span>
+                </div>
+              </div>
+            </div>
+            <div class="service-card__footer">
+              <a href="service-details.html" class="btn btn--primary btn--block">View Specifications</a>
+            </div>
+          </article>
+
+          <!-- Service Card 2 -->
+          <article class="service-card">
+            <div class="service-card__header">
+              <span class="badge badge--secondary">Admissions &amp; Education</span>
+            </div>
+            <div class="service-card__body">
+              <h2 class="service-card__title">Entrance Exam &amp; College Admissions</h2>
+              <p class="service-card__desc">Online counseling registrations, entrance examination applications, university form submissions, and scholarship portals.</p>
+              
+              <div class="service-card__specs">
+                <div class="spec-row">
+                  <span class="spec-row__label">Required Documents:</span>
+                  <span class="spec-row__value">Admit Card, Score Card, Certificates</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-row__label">Processing:</span>
+                  <span class="spec-row__value">Assisted Counter Processing</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-row__label">Portal Fees:</span>
+                  <span class="spec-row__value">As per institution guidelines</span>
+                </div>
+              </div>
+            </div>
+            <div class="service-card__footer">
+              <a href="service-details.html" class="btn btn--primary btn--block">View Specifications</a>
+            </div>
+          </article>
+
+          <!-- Service Card 3 -->
+          <article class="service-card">
+            <div class="service-card__header">
+              <span class="badge badge--neutral">Certificates</span>
+            </div>
+            <div class="service-card__body">
+              <h2 class="service-card__title">State RTPS Certificate Applications</h2>
+              <p class="service-card__desc">Facilitation for residential (Niwas), caste (Jati), income (Aay), and non-creamy layer certificates on official state portals.</p>
+              
+              <div class="service-card__specs">
+                <div class="spec-row">
+                  <span class="spec-row__label">Required Documents:</span>
+                  <span class="spec-row__value">ID Proof, Land/Income details, Photo</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-row__label">Processing:</span>
+                  <span class="spec-row__value">Online Portal Submission</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-row__label">Portal Fees:</span>
+                  <span class="spec-row__value">Standard government schedule</span>
+                </div>
+              </div>
+            </div>
+            <div class="service-card__footer">
+              <a href="service-details.html" class="btn btn--primary btn--block">View Specifications</a>
+            </div>
+          </article>
+
+          <!-- Service Card 4 -->
+          <article class="service-card">
+            <div class="service-card__header">
+              <span class="badge badge--neutral">Identity &amp; Legal</span>
+            </div>
+            <div class="service-card__body">
+              <h2 class="service-card__title">Voter ID &amp; Citizen Portal Corrections</h2>
+              <p class="service-card__desc">New voter registration (Form 6), address modification, correction requests, and voter slip download services.</p>
+              
+              <div class="service-card__specs">
+                <div class="spec-row">
+                  <span class="spec-row__label">Required Documents:</span>
+                  <span class="spec-row__value">Age Proof, Address Proof, Photo</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-row__label">Processing:</span>
+                  <span class="spec-row__value">Online Verification &amp; Filing</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-row__label">Portal Fees:</span>
+                  <span class="spec-row__value">As applicable</span>
+                </div>
+              </div>
+            </div>
+            <div class="service-card__footer">
+              <a href="service-details.html" class="btn btn--primary btn--block">View Specifications</a>
+            </div>
+          </article>
+
+          <!-- Service Card 5 -->
+          <article class="service-card">
+            <div class="service-card__header">
+              <span class="badge badge--neutral">Banking &amp; Bills</span>
+            </div>
+            <div class="service-card__body">
+              <h2 class="service-card__title">Electricity &amp; Utility Bill Payments</h2>
+              <p class="service-card__desc">Instant online consumer electricity bill payment, new electric meter online application assistance, and receipt generation.</p>
+              
+              <div class="service-card__specs">
+                <div class="spec-row">
+                  <span class="spec-row__label">Required Documents:</span>
+                  <span class="spec-row__value">Consumer Number (CA Number)</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-row__label">Processing:</span>
+                  <span class="spec-row__value">Instant Digital Receipt</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-row__label">Portal Fees:</span>
+                  <span class="spec-row__value">Exact Bill Amount</span>
+                </div>
+              </div>
+            </div>
+            <div class="service-card__footer">
+              <a href="service-details.html" class="btn btn--primary btn--block">View Specifications</a>
+            </div>
+          </article>
+
+          <!-- Service Card 6 -->
+          <article class="service-card">
+            <div class="service-card__header">
+              <span class="badge badge--accent">Document &amp; Print</span>
+            </div>
+            <div class="service-card__body">
+              <h2 class="service-card__title">A4 Document Scanning &amp; Printing</h2>
+              <p class="service-card__desc">High-resolution color/black-and-white printouts, multi-page PDF scanning, document lamination, and bio-data formatting.</p>
+              
+              <div class="service-card__specs">
+                <div class="spec-row">
+                  <span class="spec-row__label">Required Documents:</span>
+                  <span class="spec-row__value">Digital File / Hard Copy</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-row__label">Processing:</span>
+                  <span class="spec-row__value">Instant on Counter</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-row__label">Service Rate:</span>
+                  <span class="spec-row__value">Nominal center rate</span>
+                </div>
+              </div>
+            </div>
+            <div class="service-card__footer">
+              <a href="service-details.html" class="btn btn--primary btn--block">View Specifications</a>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- UI State: Empty State Architecture (Included for Future Dynamic Filtering) -->
+        <div class="state-container is-hidden" id="services-empty-state">
+          <div class="empty-state">
+            <div class="empty-state__icon">
+              <svg class="icon icon--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </div>
+            <h3 class="empty-state__title">No Services Found</h3>
+            <p class="empty-state__desc">No services match your active filter or search term. Please try selecting a different category or clear the search field.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Center Consultation Banner -->
+    <section class="section">
+      <div class="container">
+        <div class="card card--padded consultation-card">
+          <div class="consultation-card__content">
+            <h2 class="consultation-card__title">Need a Service Not Listed Above?</h2>
+            <p class="consultation-card__desc">
+              We process hundreds of official online notifications, examination forms, and departmental requests throughout the year. Visit our center at Mahalpar or call for direct consultation.
+            </p>
+          </div>
+          <div class="consultation-card__action">
+            <a href="contact.html" class="btn btn--primary">Inquire at Counter</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container site-footer__container">
+      <div class="site-footer__brand-col">
+        <a href="index.html" class="brand brand--footer">
+          <span class="brand__logo-mark" aria-hidden="true">ME</span>
+          <span class="brand__text-group">
+            <span class="brand__title">Maa Enterprises</span>
+            <span class="brand__subtitle">Cyber Cafe &amp; Online Service Center</span>
+          </span>
+        </a>
+        <p class="site-footer__about">
+          Dedicated digital service center offering official form filling, online recruitment assistance, document formatting, and citizen service facilitation.
+        </p>
+        <p class="site-footer__owner"><strong>Proprietor:</strong> Rajesh Kumar</p>
+      </div>
+
+      <div class="site-footer__nav-col">
+        <h3 class="site-footer__heading">Quick Navigation</h3>
+        <ul class="site-footer__list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services Catalog</a></li>
+          <li><a href="track-request.html">Track Service Request</a></li>
+          <li><a href="resume-maker.html">Resume / Bio-Data Maker</a></li>
+          <li><a href="trade-request.html">Trade &amp; Bulk Request</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="site-footer__nav-col">
+        <h3 class="site-footer__heading">Service Domains</h3>
+        <ul class="site-footer__list">
+          <li><a href="services.html">Government Job Applications</a></li>
+          <li><a href="services.html">Admissions &amp; Counseling</a></li>
+          <li><a href="services.html">State RTPS &amp; Certificates</a></li>
+          <li><a href="services.html">Utility &amp; Electricity Payments</a></li>
+          <li><a href="services.html">Document Scanning &amp; Printing</a></li>
+        </ul>
+      </div>
+
+      <div class="site-footer__contact-col">
+        <h3 class="site-footer__heading">Center Address</h3>
+        <address class="site-footer__address">
+          <p>Maa Enterprises</p>
+          <p>Mahalpar, Bihar Sharif</p>
+          <p>Nalanda, Bihar - 803101</p>
+          <p class="site-footer__contact-item"><strong>Phone / WhatsApp:</strong> <a href="tel:9693125648">9693125648</a></p>
+          <p class="site-footer__contact-item"><strong>Hours:</strong> 10:00 AM – 06:00 PM</p>
+        </address>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <div class="container site-footer__bottom-container">
+        <p class="site-footer__copyright">
+          &copy; 2026 Maa Enterprises Cyber Cafe &amp; Online Service Center. All rights reserved.
+        </p>
+        <p class="site-footer__disclaimer">
+          Independent facilitation center. Government portal fees and requirements are determined by respective official authorities.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
