@@ -1,9 +1,10 @@
 /**
  * MAA ENTERPRISES — ADMIN DASHBOARD CONTROLLER (js/admin.js)
- * Implements:
- * - Real-time statistics computation
+ * Production-ready Controller implementing:
+ * - Real-time KPI statistics computation
+ * - Safe missing-field normalization (Never crashes on undefined fields)
  * - Customer application management (Search, Status updates, Payment updates, Private admin notes)
- * - Dynamic Services Catalog CRUD (Add, Edit, Toggle Active, Delete in Firestore)
+ * - Dynamic Services Catalog CRUD (Add, Edit, Toggle Active, Safe Delete in Firestore)
  * - Trade & Bulk requests inspection
  * - Website Inquiries viewer
  * - Secure Admin session management & logout
@@ -81,7 +82,7 @@ function initTabs() {
 }
 
 /**
- * Fetch and load all collections
+ * Fetch and load all collections safely
  */
 async function loadAllDashboardData() {
   await Promise.all([
@@ -94,7 +95,7 @@ async function loadAllDashboardData() {
 }
 
 /**
- * 1. Applications Loader
+ * 1. Applications Loader & Normalizer
  */
 async function loadApplications() {
   applicationsList = [];
@@ -105,10 +106,8 @@ async function loadApplications() {
     try {
       const snap = await getDocs(collection(db, 'applications'));
       snap.forEach(docSnap => {
-        applicationsList.push({
-          id: docSnap.id,
-          ...docSnap.data()
-        });
+        const raw = docSnap.data();
+        applicationsList.push(normalizeApplicationRecord(docSnap.id, raw));
       });
     } catch (err) {
       console.warn('[Admin] Firestore applications fetch notice:', err.message);
@@ -119,11 +118,60 @@ async function loadApplications() {
   if (applicationsList.length === 0) {
     try {
       const local = JSON.parse(localStorage.getItem('maa_enterprises_applications') || '[]');
-      applicationsList = local;
+      applicationsList = local.map(a => normalizeApplicationRecord(a.requestId || a.id, a));
     } catch (e) {}
   }
 
+  // Sort newest first
+  applicationsList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
   renderApplicationsTable(applicationsList);
+}
+
+/**
+ * Normalizes Application record to prevent missing-field crashes
+ */
+function normalizeApplicationRecord(id, raw) {
+  if (!raw) raw = {};
+  
+  // Status normalization
+  let status = String(raw.status || 'pending').toLowerCase().replace(/\s+/g, '_');
+  if (status.includes('process')) status = 'processing';
+  else if (status.includes('complet')) status = 'completed';
+  else if (status.includes('action')) status = 'action_required';
+  else if (status.includes('reject') || status.includes('cancel')) status = 'cancelled';
+  else if (status.includes('verif')) status = 'under_verification';
+  else if (!['pending', 'under_verification', 'processing', 'completed', 'action_required', 'cancelled'].includes(status)) {
+    status = 'pending';
+  }
+
+  // Payment normalization
+  let paymentStatus = String(raw.paymentStatus || 'pending').toLowerCase();
+  if (!['pending', 'paid', 'partial', 'failed'].includes(paymentStatus)) {
+    paymentStatus = 'pending';
+  }
+
+  return {
+    id: id || raw.requestId || 'REQ-UNKNOWN',
+    requestId: raw.requestId || id || 'REQ-UNKNOWN',
+    fullName: raw.fullName || raw.customer?.name || raw.applicantName || 'Applicant',
+    mobile: raw.mobile || raw.customer?.mobile || raw.phone || 'N/A',
+    email: raw.email || raw.customer?.email || '',
+    address: raw.address || raw.customer?.address || '',
+    serviceId: raw.serviceId || raw.serviceSnapshot?.id || '',
+    serviceName: raw.serviceName || raw.serviceSnapshot?.name || raw.service || 'General Service',
+    category: raw.category || raw.serviceCategory || raw.serviceSnapshot?.category || 'General',
+    status: status,
+    paymentStatus: paymentStatus,
+    publicRemark: raw.publicRemark || raw.staffNote || '',
+    adminNotes: raw.adminNotes || raw.internalNotes || '',
+    createdAt: raw.createdAt || raw.submittedAt || new Date().toISOString(),
+    serviceSnapshot: raw.serviceSnapshot || {
+      id: raw.serviceId || '',
+      name: raw.serviceName || 'General Service',
+      category: raw.category || 'General'
+    }
+  };
 }
 
 function renderApplicationsTable(apps) {
@@ -141,22 +189,30 @@ function renderApplicationsTable(apps) {
     return;
   }
 
+  const statusLabels = {
+    pending: { label: 'Pending', badge: 'badge-amber' },
+    under_verification: { label: 'Under Verification', badge: 'badge-amber' },
+    processing: { label: 'In Processing', badge: 'badge-cyan' },
+    completed: { label: 'Completed', badge: 'badge-emerald' },
+    action_required: { label: 'Action Required', badge: 'badge-purple' },
+    cancelled: { label: 'Cancelled', badge: 'badge-rose' }
+  };
+
+  const paymentLabels = {
+    pending: { label: 'Pending', style: 'color: var(--text-muted);' },
+    paid: { label: 'Paid in Full', style: 'color: var(--accent-emerald); font-weight: 600;' },
+    partial: { label: 'Partial', style: 'color: var(--accent-amber); font-weight: 600;' },
+    failed: { label: 'Failed', style: 'color: var(--accent-rose); font-weight: 600;' }
+  };
+
   tbody.innerHTML = apps.map(app => {
-    const status = app.status || 'Pending';
-    let badgeClass = 'badge-amber';
-    if (status === 'Processing') badgeClass = 'badge-cyan';
-    else if (status === 'Completed') badgeClass = 'badge-emerald';
-    else if (status === 'Action Required') badgeClass = 'badge-purple';
-    else if (status === 'Rejected') badgeClass = 'badge-rose';
-
-    const paymentStatus = app.paymentStatus || 'Unpaid';
-    const payBadge = paymentStatus === 'Paid' ? 'style="color: var(--accent-emerald);"' : 'style="color: var(--text-muted);"';
-
-    const reqId = escapeHtml(app.requestId || app.id || 'N/A');
-    const name = escapeHtml(app.fullName || app.applicantName || 'N/A');
-    const mobile = escapeHtml(app.mobile || app.phone || 'N/A');
-    const serviceName = escapeHtml(app.serviceName || (app.service ? app.service.name : 'General Service'));
-    const dateStr = formatDate(app.createdAt || app.submittedAt || new Date());
+    const stInfo = statusLabels[app.status] || statusLabels.pending;
+    const payInfo = paymentLabels[app.paymentStatus] || paymentLabels.pending;
+    const reqId = escapeHtml(app.requestId);
+    const name = escapeHtml(app.fullName);
+    const mobile = escapeHtml(app.mobile);
+    const serviceName = escapeHtml(app.serviceName);
+    const dateStr = formatDate(app.createdAt);
 
     return `
       <tr>
@@ -165,8 +221,8 @@ function renderApplicationsTable(apps) {
         <td><a href="tel:${mobile}" style="color: var(--text-primary);">${mobile}</a></td>
         <td>${serviceName}</td>
         <td style="color: var(--text-secondary);">${dateStr}</td>
-        <td><span class="badge ${badgeClass}">${status}</span></td>
-        <td><span ${payBadge}>${paymentStatus}</span></td>
+        <td><span class="badge ${stInfo.badge}">${stInfo.label}</span></td>
+        <td><span ${payInfo.style}>${payInfo.label}</span></td>
         <td>
           <button class="btn btn-outline btn-sm edit-app-btn" data-id="${reqId}" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">
             View / Edit
@@ -188,11 +244,15 @@ function renderApplicationsTable(apps) {
 function bindAppFilters() {
   const searchInput = document.getElementById('adminAppSearch');
   const statusFilter = document.getElementById('adminStatusFilter');
+  const paymentFilter = document.getElementById('adminPaymentFilter');
+  const categoryFilter = document.getElementById('adminCategoryFilter');
   const refreshBtn = document.getElementById('refreshAppsBtn');
 
   function filter() {
     const q = (searchInput?.value || '').toLowerCase().trim();
     const st = statusFilter?.value || 'ALL';
+    const pay = paymentFilter?.value || 'ALL';
+    const cat = categoryFilter?.value || 'ALL';
 
     const filtered = applicationsList.filter(app => {
       const matchQuery = !q || 
@@ -201,9 +261,11 @@ function bindAppFilters() {
         (app.mobile && app.mobile.includes(q)) ||
         (app.serviceName && app.serviceName.toLowerCase().includes(q));
 
-      const matchStatus = st === 'ALL' || (app.status || 'Pending') === st;
+      const matchStatus = st === 'ALL' || app.status === st;
+      const matchPayment = pay === 'ALL' || app.paymentStatus === pay;
+      const matchCategory = cat === 'ALL' || (app.category && app.category.includes(cat)) || (app.serviceCategory && app.serviceCategory.includes(cat));
 
-      return matchQuery && matchStatus;
+      return matchQuery && matchStatus && matchPayment && matchCategory;
     });
 
     renderApplicationsTable(filtered);
@@ -211,8 +273,11 @@ function bindAppFilters() {
 
   searchInput?.addEventListener('input', filter);
   statusFilter?.addEventListener('change', filter);
+  paymentFilter?.addEventListener('change', filter);
+  categoryFilter?.addEventListener('change', filter);
+
   refreshBtn?.addEventListener('click', () => {
-    showToast('Refreshing records...', 'info');
+    showToast('Refreshing applications...', 'info');
     loadApplications().then(() => updateKPIMetrics());
   });
 }
@@ -230,14 +295,15 @@ function openApplicationModal(requestId) {
   currentEditingAppId = requestId;
 
   document.getElementById('modalAppIdTitle').textContent = `Application: ${requestId}`;
-  document.getElementById('detailApplicantName').textContent = app.fullName || app.applicantName || 'N/A';
-  document.getElementById('detailApplicantMobile').textContent = app.mobile || app.phone || 'N/A';
-  document.getElementById('detailApplicantService').textContent = app.serviceName || (app.service ? app.service.name : 'N/A');
-  document.getElementById('detailApplicantDate').textContent = formatDate(app.createdAt || app.submittedAt || new Date());
+  document.getElementById('detailApplicantName').textContent = app.fullName;
+  document.getElementById('detailApplicantMobile').textContent = app.mobile;
+  document.getElementById('detailApplicantService').textContent = app.serviceName;
+  document.getElementById('detailApplicantDate').textContent = formatDate(app.createdAt);
 
-  document.getElementById('detailStatusSelect').value = app.status || 'Pending';
-  document.getElementById('detailPaymentSelect').value = app.paymentStatus || 'Unpaid';
-  document.getElementById('detailAdminNote').value = app.adminNotes || app.internalNotes || '';
+  document.getElementById('detailStatusSelect').value = app.status;
+  document.getElementById('detailPaymentSelect').value = app.paymentStatus;
+  document.getElementById('detailPublicRemark').value = app.publicRemark || '';
+  document.getElementById('detailAdminNote').value = app.adminNotes || '';
 
   const modal = document.getElementById('adminAppModal');
   modal.classList.add('modal-active');
@@ -272,7 +338,7 @@ async function loadServicesCatalog() {
     }
   }
 
-  // 2. If no services in Firestore, load default catalog from window.SERVICES_DATA
+  // 2. If no services in Firestore, load baseline from window.SERVICES_DATA
   if (servicesList.length === 0 && window.SERVICES_DATA) {
     servicesList = [...window.SERVICES_DATA];
   }
@@ -287,7 +353,7 @@ function renderServicesTable(services) {
   if (services.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="6" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+        <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
           No services found in catalog.
         </td>
       </tr>
@@ -304,7 +370,8 @@ function renderServicesTable(services) {
         <td><code>${escapeHtml(s.id)}</code></td>
         <td><strong>${escapeHtml(s.name)}</strong></td>
         <td><span class="badge badge-cyan">${escapeHtml(s.category)}</span></td>
-        <td style="color: var(--text-secondary);">${escapeHtml(s.processingTime || 'Standard counter processing')}</td>
+        <td style="color: var(--text-secondary);">${escapeHtml(s.processingTime || 'Same day counter processing')}</td>
+        <td style="color: var(--text-secondary);">${escapeHtml(s.fee || 'As per official notification')}</td>
         <td>${badge}</td>
         <td>
           <div style="display: flex; gap: 0.5rem;">
@@ -320,7 +387,7 @@ function renderServicesTable(services) {
     `;
   }).join('');
 
-  // Bind service edit and toggle buttons
+  // Bind edit and toggle buttons
   document.querySelectorAll('.edit-srv-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.id;
@@ -342,9 +409,9 @@ function bindServiceFilters() {
   searchInput?.addEventListener('input', () => {
     const q = searchInput.value.toLowerCase().trim();
     const filtered = servicesList.filter(s => 
-      s.name.toLowerCase().includes(q) || 
-      s.category.toLowerCase().includes(q) || 
-      s.id.toLowerCase().includes(q)
+      (s.name && s.name.toLowerCase().includes(q)) || 
+      (s.category && s.category.toLowerCase().includes(q)) || 
+      (s.id && s.id.toLowerCase().includes(q))
     );
     renderServicesTable(filtered);
   });
@@ -398,11 +465,12 @@ async function toggleServiceActive(serviceId, newActiveState) {
 
   if (isFirebaseConfigured && db) {
     try {
-      await updateDoc(doc(db, 'services', serviceId), {
+      await setDoc(doc(db, 'services', serviceId), {
+        ...target,
         active: newActiveState,
         updatedAt: serverTimestamp()
-      });
-      showToast(`Service "${serviceId}" status updated in Firestore.`, 'success');
+      }, { merge: true });
+      showToast(`Service status updated in Firestore.`, 'success');
     } catch (e) {
       console.warn('[Admin] Firestore service update notice:', e.message);
       showToast(`Service status updated locally.`, 'info');
@@ -410,6 +478,11 @@ async function toggleServiceActive(serviceId, newActiveState) {
   } else {
     showToast(`Service status updated.`, 'info');
   }
+
+  // Update localStorage override
+  try {
+    localStorage.setItem('maa_dynamic_services', JSON.stringify(servicesList));
+  } catch (err) {}
 
   renderServicesTable(servicesList);
 }
@@ -513,16 +586,25 @@ async function loadInquiries() {
  */
 function updateKPIMetrics() {
   const total = applicationsList.length;
-  const pending = applicationsList.filter(a => (a.status || 'Pending') === 'Pending').length;
-  const processing = applicationsList.filter(a => a.status === 'Processing' || a.status === 'Under Verification').length;
-  const completed = applicationsList.filter(a => a.status === 'Completed').length;
-  const trade = tradeList.length;
+  const pending = applicationsList.filter(a => a.status === 'pending' || a.status === 'under_verification').length;
+  const processing = applicationsList.filter(a => a.status === 'processing').length;
+  const completed = applicationsList.filter(a => a.status === 'completed').length;
+  
+  // Today's count
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const todayCount = applicationsList.filter(a => {
+    try {
+      return a.createdAt && String(a.createdAt).slice(0, 10) === todayStr;
+    } catch (e) {
+      return false;
+    }
+  }).length;
 
   document.getElementById('kpiTotalApps').textContent = total;
   document.getElementById('kpiPendingApps').textContent = pending;
   document.getElementById('kpiProcessingApps').textContent = processing;
   document.getElementById('kpiCompletedApps').textContent = completed;
-  document.getElementById('kpiTradeOrders').textContent = trade;
+  document.getElementById('kpiTodayApps').textContent = todayCount;
 }
 
 /**
@@ -538,6 +620,7 @@ function bindModals() {
 
     const newStatus = document.getElementById('detailStatusSelect').value;
     const newPayment = document.getElementById('detailPaymentSelect').value;
+    const newPublicRemark = document.getElementById('detailPublicRemark').value.trim();
     const newNote = document.getElementById('detailAdminNote').value.trim();
 
     // Update in local memory
@@ -545,6 +628,7 @@ function bindModals() {
     if (app) {
       app.status = newStatus;
       app.paymentStatus = newPayment;
+      app.publicRemark = newPublicRemark;
       app.adminNotes = newNote;
       app.updatedAt = new Date().toISOString();
     }
@@ -555,13 +639,14 @@ function bindModals() {
         await updateDoc(doc(db, 'applications', currentEditingAppId), {
           status: newStatus,
           paymentStatus: newPayment,
+          publicRemark: newPublicRemark,
           adminNotes: newNote,
           updatedAt: serverTimestamp()
         });
-        showToast('Application updated in Firestore.', 'success');
+        showToast('Application status & notes updated in Firestore.', 'success');
       } catch (err) {
         console.warn('[Admin] Firestore application update notice:', err.message);
-        showToast('Application saved in local cache.', 'info');
+        showToast('Application updated in local cache.', 'info');
       }
     } else {
       showToast('Application updated successfully.', 'success');
@@ -604,7 +689,8 @@ function bindModals() {
 
     const documents = docsRaw ? docsRaw.split(',').map(d => d.trim()).filter(Boolean) : [];
 
-    const serviceId = editId || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    // Stable Unique Service ID
+    const serviceId = editId || ('srv-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-' + Math.random().toString(36).substring(2, 6));
 
     const serviceObj = {
       id: serviceId,
@@ -636,11 +722,16 @@ function bindModals() {
         showToast('Service saved in Firestore.', 'success');
       } catch (err) {
         console.warn('[Admin] Firestore service save notice:', err.message);
-        showToast('Service updated in local memory.', 'info');
+        showToast('Service updated in local cache.', 'info');
       }
     } else {
       showToast('Service updated in local catalog.', 'success');
     }
+
+    // Sync to localStorage
+    try {
+      localStorage.setItem('maa_dynamic_services', JSON.stringify(servicesList));
+    } catch (err) {}
 
     closeServiceModal();
     renderServicesTable(servicesList);
