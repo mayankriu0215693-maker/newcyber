@@ -291,3 +291,21 @@ export function requireAdminAuth(onAuthorizedCallback) {
     }
   });
 }
+
+// Global window registration and automatic auth listener trigger
+if (typeof window !== 'undefined') {
+  window.AuthService = {
+    loginAdminUser,
+    logoutUser,
+    checkAdminRole,
+    resetAdminPassword,
+    initAuthListener,
+    updateHeaderAuthUI,
+    requireAdminAuth
+  };
+
+  // Auto initialize header UI on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    initAuthListener();
+  });
+}
