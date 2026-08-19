@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin & Staff Login — Maa Enterprises | Bihar Sharif</title>
+  <meta name="description" content="Secure administrative authentication portal for Maa Enterprises Cyber Cafe & Online Service Center.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at 50% 20%, #111e40 0%, #070d1e 80%);
+    }
+    .login-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.25rem;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem 2.25rem;
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      overflow: hidden;
+    }
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--grad-hero);
+    }
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .login-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      border-radius: var(--radius-lg);
+      background: var(--grad-accent-btn);
+      color: #ffffff;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-glow-blue);
+    }
+    .login-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.35rem;
+    }
+    .login-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .form-extra {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .login-info-box {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .login-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--text-highlight);
+      font-size: 0.875rem;
+      margin-top: 1.5rem;
+      text-align: center;
+      justify-content: center;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header (Compact) -->
+  <header class="site-header" style="background: transparent; border-bottom: 1px solid var(--border-subtle);">
+    <div class="container nav-container" style="justify-content: space-between;">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        </div>
+        <div class="brand-info">
+          <span class="brand-name">Maa Enterprises</span>
+          <span class="brand-badge">Cyber Cafe & Online Services</span>
+        </div>
+      </a>
+      <a href="index.html" class="btn btn-outline btn-sm">
+        &larr; Back to Website
+      </a>
+    </div>
+  </header>
+
+  <!-- Login Area -->
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:28px;height:28px;">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <h1 class="login-title">Staff &amp; Admin Portal</h1>
+        <p class="login-subtitle">Sign in to manage applications, services, and requests</p>
+      </div>
+
+      <form id="adminLoginForm" class="login-form" novalidate>
+        <div class="form-group">
+          <label for="adminEmail" class="form-label required">Email Address</label>
+          <input type="email" id="adminEmail" class="form-input" placeholder="admin@maaenterprises.com" required autocomplete="username">
+          <span class="error-message"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="adminPassword" class="form-label required">Password</label>
+          <input type="password" id="adminPassword" class="form-input" placeholder="Enter your password" required autocomplete="current-password">
+          <span class="error-message"></span>
+        </div>
+
+        <div class="form-extra">
+          <label style="display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="rememberAdmin" checked>
+            <span>Remember login</span>
+          </label>
+          <a href="#" id="forgotPasswordLink" style="color: var(--text-highlight);">Forgot password?</a>
+        </div>
+
+        <button type="submit" id="adminLoginBtn" class="btn btn-primary btn-block btn-lg" style="margin-top: 0.5rem;">
+          <span>Sign In to Dashboard</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </form>
+
+      <div class="login-info-box">
+        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Security Notice:</strong>
+        Administrative access is restricted to verified center staff. All operations, status updates, and private notes are secured with Firebase Authentication and Firestore Security Rules.
+      </div>
+
+      <a href="index.html" class="login-back-link">
+        &larr; Return to Public Homepage
+      </a>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script type="module">
+    import { loginAdminUser, resetAdminPassword, initAuthListener } from './js/auth.js';
+    import { showToast } from './js/app.js';
+
+    // If already logged in as admin, redirect to admin.html
+    initAuthListener((user, isAdmin) => {
+      if (user && isAdmin) {
+        window.location.href = 'admin.html';
+      }
+    });
+
+    const form = document.getElementById('adminLoginForm');
+    const loginBtn = document.getElementById('adminLoginBtn');
+    const forgotLink = document.getElementById('forgotPasswordLink');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('adminEmail').value.trim();
+      const password = document.getElementById('adminPassword').value;
+
+      if (!email) {
+        showToast('Please enter your email address.', 'warning');
+        document.getElementById('adminEmail').focus();
+        return;
+      }
+      if (!password) {
+        showToast('Please enter your password.', 'warning');
+        document.getElementById('adminPassword').focus();
+        return;
+      }
+
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<span class="spinner"></span> Signing in...';
+
+      try {
+        const result = await loginAdminUser(email, password);
+        showToast(result.message || 'Login successful!', 'success');
+        setTimeout(() => {
+          window.location.href = 'admin.html';
+        }, 600);
+      } catch (err) {
+        showToast(err.message || 'Login failed. Please verify your credentials.', 'error');
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<span>Sign In to Dashboard</span>';
+      }
+    });
+
+    forgotLink?.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('adminEmail').value.trim();
+      if (!email) {
+        showToast('Please enter your email address above to reset password.', 'info');
+        document.getElementById('adminEmail').focus();
+        return;
+      }
+      try {
+        await resetAdminPassword(email);
+        showToast('Password reset link sent to your email.', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    });
+  </script>
+</body>
+</html>
