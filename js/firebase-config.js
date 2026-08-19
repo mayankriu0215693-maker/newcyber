@@ -37,14 +37,14 @@ import {
 // Client configuration (Safe to include in frontend client build)
 // Replace placeholders with your Firebase project credentials from Firebase Console
 const firebaseConfig = {
-  apiKey: "AIzaSyPlaceholder_MaaEnterprises_APIKey",
-  authDomain: "maa-enterprises-portal.firebaseapp.com",
-  projectId: "maa-enterprises-portal",
-  storageBucket: "maa-enterprises-portal.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abcdef1234567890abcdef"
+  apiKey: "AIzaSyA7NwBPiIbB4rbQVo83yJIxq0O2q58FnOw",
+  authDomain: "maa-enterprises-new.firebaseapp.com",
+  projectId: "maa-enterprises-new",
+  storageBucket: "maa-enterprises-new.firebasestorage.app",
+  messagingSenderId: "166006975603",
+  appId: "1:166006975603:web:e9dd8c9ddd40011374ce06",
+  measurementId: "G-SDBFZR8VMF"
 };
-
 let app = null;
 let auth = null;
 let db = null;
