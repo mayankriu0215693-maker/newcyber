@@ -2,47 +2,38 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper: Check if user is authenticated
     function isAuthenticated() {
       return request.auth != null;
     }
 
-    // Helper: Check if authenticated user is registered in 'admins' collection
     function isAdmin() {
-      return isAuthenticated() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+      return isAuthenticated() 
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.active == true;
     }
 
-    // 1. Admins Collection:
-    // Only verified authenticated admins can read/verify their own profile.
-    // Client write is strictly denied (must be provisioned in Firebase Console).
+    // 1. Admins Collection: केवल ऑथेंटिकेटेड एडमिन अपनी प्रोफाइल पढ़ सकता है, क्लाइंट राइट पूरी तरह बंद है
     match /admins/{adminUid} {
       allow read: if isAuthenticated() && request.auth.uid == adminUid;
       allow write: if false;
     }
 
-    // 2. Services Collection:
-    // Public can read active services catalog.
-    // Only authorized Admin can create, edit, or delete services.
+    // 2. Services: पब्लिक केवल पढ़ सकती है, निर्माण/संपादन केवल एडमिन कर सकता है
     match /services/{serviceId} {
       allow read: if true;
-      allow write: if isAdmin();
+      allow create, update, delete: if isAdmin();
     }
 
-    // 3. Customer Applications:
-    // Public can create new applications with valid schema.
-    // Public can read applications by ID for tracking.
-    // Only Admin can update status, payment, or private admin notes.
-    // Only Admin can delete applications.
+    // 3. Applications: पब्लिक निर्माण और ट्रैकिंग आईडी से पढ़ सकती है; स्टेटस व नोट्स संपादन केवल एडमिन
     match /applications/{appId} {
       allow create: if request.resource.data.fullName is string
-                    && request.resource.data.mobile is string;
+                    && request.resource.data.mobile is string
+                    && request.resource.data.serviceName is string;
       allow read: if true;
       allow update, delete: if isAdmin();
     }
 
-    // 4. Trade & Bulk Requests:
-    // Public can submit trade inquiries.
-    // Only Admin can update or manage them.
+    // 4. Trade Requests: केवल एडमिन अपडेट कर सकता है
     match /tradeRequests/{tradeId} {
       allow create: if request.resource.data.organizationName is string
                     && request.resource.data.mobile is string;
@@ -50,22 +41,16 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
-    // 5. Contact Inquiries:
-    // Public can submit contact messages.
-    // Only Admin can read and manage inquiries.
+    // 5. Inquiries: पब्लिक सेंड कर सकती है, एडमिन मैनेज कर सकता है
     match /inquiries/{inquiryId} {
-      allow create: if request.resource.data.name is string
-                    && request.resource.data.phone is string;
-      allow read, write: if isAdmin();
+      allow create: if request.resource.data.name is string && request.resource.data.phone is string;
+      allow read, update, delete: if isAdmin();
     }
 
-    // 6. Center Settings:
-    // Public can read verified business settings.
-    // Only Admin can modify settings.
+    // 6. Settings: पब्लिक रीड, एडमिन राइट
     match /settings/{settingId} {
       allow read: if true;
       allow write: if isAdmin();
     }
-
   }
 }
