@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Maa Enterprises Cyber Cafe | Bihar Sharif</title>
+  <meta name="description" content="Management portal for customer applications, trade requests, dynamic services catalog, and center notes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .admin-layout {
+      min-height: 100vh;
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-navbar {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.875rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .admin-nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+    .admin-user-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+    }
+    .stats-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-blue);
+    }
+    .kpi-card.kpi-pending::before { background: var(--accent-amber); }
+    .kpi-card.kpi-processing::before { background: var(--accent-cyan); }
+    .kpi-card.kpi-completed::before { background: var(--accent-emerald); }
+    .kpi-card.kpi-trade::before { background: var(--accent-purple); }
+
+    .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 0.35rem;
+    }
+    .kpi-val {
+      font-size: 1.875rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+    .admin-tab-bar {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+    .admin-tab-btn {
+      padding: 0.65rem 1.25rem;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      transition: all var(--transition-fast);
+    }
+    .admin-tab-btn:hover {
+      color: var(--text-primary);
+    }
+    .admin-tab-btn.active {
+      color: var(--text-highlight);
+      border-bottom-color: var(--text-highlight);
+    }
+    .admin-tab-pane {
+      display: none;
+    }
+    .admin-tab-pane.active {
+      display: block;
+    }
+    .table-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.875rem;
+    }
+    .admin-table th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1rem 1.25rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .admin-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+    }
+    .admin-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .admin-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+    .admin-controls-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .auth-guard-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-primary);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .unauthorized-card {
+      max-width: 420px;
+      width: 90%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+    }
+  </style>
+</head>
+<body class="admin-layout">
+
+  <!-- Auth Loading Gatekeeper -->
+  <div id="adminAuthLoading" class="auth-guard-overlay">
+    <div class="spinner" style="width: 48px; height: 48px; border-width: 4px;"></div>
+    <p style="color: var(--text-secondary); font-size: 0.95rem;">Verifying Administrator Authorization...</p>
+  </div>
+
+  <!-- Unauthorized Gatekeeper Fallback -->
+  <div id="adminUnauthorized" class="auth-guard-overlay" style="display: none;">
+    <div class="unauthorized-card">
+      <div style="font-size: 3rem; margin-bottom: 0.75rem;">🔒</div>
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem;">Admin Access Required</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.75rem;">
+        You must be signed in with an authorized staff or administrator account to view this dashboard.
+      </p>
+      <a href="login.html" class="btn btn-primary btn-block btn-lg">
+        Go to Admin Login
+      </a>
+      <a href="index.html" style="display: block; margin-top: 1rem; color: var(--text-muted); font-size: 0.85rem;">
+        &larr; Return to Homepage
+      </a>
+    </div>
+  </div>
+
+  <!-- Protected Admin Dashboard Content -->
+  <div id="adminDashboardContent" style="display: none; flex: 1; display: flex; flex-direction: column;">
+    
+    <!-- Admin Navbar -->
+    <header class="admin-navbar">
+      <div class="container admin-nav-container">
+        <a href="index.html" class="brand" target="_blank" title="View Public Website">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+          <div class="brand-info">
+            <span class="brand-name">Maa Enterprises</span>
+            <span class="brand-badge">Admin Workspace</span>
+          </div>
+        </a>
+
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <div class="admin-user-pill">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent-emerald);"></span>
+            <span id="adminUserEmail">admin@maaenterprises.com</span>
+          </div>
+          <a href="index.html" target="_blank" class="btn btn-outline btn-sm">
+            <span>View Public Site</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+          <button id="adminLogoutBtn" class="btn btn-danger btn-sm" style="background: rgba(244, 63, 94, 0.15); border-color: rgba(244, 63, 94, 0.3); color: var(--accent-rose);">
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="section" style="padding: 2rem 0; flex: 1;">
+      <div class="container">
+        
+        <!-- KPI Metrics Grid -->
+        <div class="stats-kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Total Applications</span>
+            <span id="kpiTotalApps" class="kpi-val">0</span>
+          </div>
+          <div class="kpi-card kpi-pending">
+            <span class="kpi-label">Pending Verification</span>
+            <span id="kpiPendingApps" class="kpi-val">0</span>
+          </div>
+          <div class="kpi-card kpi-processing">
+            <span class="kpi-label">In Processing</span>
+            <span id="kpiProcessingApps" class="kpi-val">0</span>
+          </div>
+          <div class="kpi-card kpi-completed">
+            <span class="kpi-label">Completed</span>
+            <span id="kpiCompletedApps" class="kpi-val">0</span>
+          </div>
+          <div class="kpi-card kpi-trade">
+            <span class="kpi-label">Trade / Bulk Orders</span>
+            <span id="kpiTradeOrders" class="kpi-val">0</span>
+          </div>
+        </div>
+
+        <!-- Admin Tab Navigation -->
+        <div class="admin-tab-bar" role="tablist">
+          <button class="admin-tab-btn active" data-tab="applicationsTab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>Customer Applications</span>
+          </button>
+          <button class="admin-tab-btn" data-tab="servicesTab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            <span>Services Catalog</span>
+          </button>
+          <button class="admin-tab-btn" data-tab="tradeTab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>Trade &amp; Bulk</span>
+          </button>
+          <button class="admin-tab-btn" data-tab="inquiriesTab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            <span>Website Inquiries</span>
+          </button>
+          <button class="admin-tab-btn" data-tab="settingsTab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Center Settings</span>
+          </button>
+        </div>
+
+        <!-- TAB 1: Applications Management -->
+        <div id="applicationsTab" class="admin-tab-pane active">
+          <div class="admin-filter-bar">
+            <div class="admin-controls-group" style="flex: 1; max-width: 450px;">
+              <input type="text" id="adminAppSearch" class="form-input" placeholder="Search by Name, Mobile, Request ID, or Service...">
+            </div>
+            <div class="admin-controls-group">
+              <select id="adminStatusFilter" class="form-select" style="min-width: 160px;">
+                <option value="ALL">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Under Verification">Under Verification</option>
+                <option value="Processing">In Processing</option>
+                <option value="Completed">Completed</option>
+                <option value="Action Required">Action Required</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+              <button id="refreshAppsBtn" class="btn btn-outline btn-sm" title="Reload from Firestore">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                <span>Refresh</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Request ID</th>
+                  <th>Applicant</th>
+                  <th>Mobile</th>
+                  <th>Service</th>
+                  <th>Submission Date</th>
+                  <th>Status</th>
+                  <th>Payment</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminAppsTableBody">
+                <tr>
+                  <td colspan="8" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                    Loading applications from database...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 2: Dynamic Services Catalog Management -->
+        <div id="servicesTab" class="admin-tab-pane">
+          <div class="admin-filter-bar">
+            <div style="flex: 1; max-width: 400px;">
+              <input type="text" id="adminServiceSearch" class="form-input" placeholder="Search service catalog...">
+            </div>
+            <div class="admin-controls-group">
+              <button id="addNewServiceBtn" class="btn btn-primary btn-sm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>Add New Service</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Service ID</th>
+                  <th>Service Name</th>
+                  <th>Category</th>
+                  <th>Turnaround</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminServicesTableBody">
+                <tr>
+                  <td colspan="6" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                    Loading services catalog...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 3: Trade & Bulk Requests -->
+        <div id="tradeTab" class="admin-tab-pane">
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Trade ID</th>
+                  <th>Organization</th>
+                  <th>Contact Person</th>
+                  <th>Mobile</th>
+                  <th>Service Tier / Volume</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="adminTradeTableBody">
+                <tr>
+                  <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                    Loading trade requests...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 4: Website Inquiries -->
+        <div id="inquiriesTab" class="admin-tab-pane">
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Full Name</th>
+                  <th>Mobile Number</th>
+                  <th>Category</th>
+                  <th>Message / Question</th>
+                </tr>
+              </thead>
+              <tbody id="adminInquiriesTableBody">
+                <tr>
+                  <td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                    Loading website inquiries...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 5: Center Settings -->
+        <div id="settingsTab" class="admin-tab-pane">
+          <div class="card" style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-lg); padding: 2rem; max-width: 720px;">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-bottom: 1rem;">
+              Verified Business Information (Maa Enterprises)
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.95rem;">
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+                <span style="color: var(--text-secondary);">Business Name:</span>
+                <strong>Maa Enterprises Cyber Cafe & Online Service Center</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+                <span style="color: var(--text-secondary);">Proprietor:</span>
+                <strong>Rajesh Kumar</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+                <span style="color: var(--text-secondary);">Physical Address:</span>
+                <strong>Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+                <span style="color: var(--text-secondary);">Phone / WhatsApp:</span>
+                <strong>9693125648</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+                <span style="color: var(--text-secondary);">Operating Hours:</span>
+                <strong>10:00 AM – 06:00 PM (Monday to Saturday)</strong>
+              </div>
+            </div>
+
+            <div style="margin-top: 2rem; padding: 1.25rem; background: rgba(59, 130, 246, 0.08); border-radius: var(--radius-md); border: 1px solid rgba(59, 130, 246, 0.2);">
+              <strong style="color: #ffffff; display: block; margin-bottom: 0.5rem;">Firebase Admin Setup Instructions:</strong>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                1. Go to Firebase Console &rarr; Firestore Database.<br>
+                2. Create a collection named <code>admins</code>.<br>
+                3. Create a document with your Firebase Auth UID as the Document ID.<br>
+                4. Add field <code>active: true</code> and <code>email: your-email@domain.com</code>.<br>
+                5. Once verified, Firestore Security Rules grant full administrative write privileges.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Modal: Application Detail & Status Updater -->
+  <div id="adminAppModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 id="modalAppIdTitle" class="modal-title">Application Details</h3>
+        <button id="closeAppModalBtn" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 1.25rem;">
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: rgba(255, 255, 255, 0.02); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+          <div>
+            <span style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Applicant Name</span>
+            <div id="detailApplicantName" style="font-weight: 700; color: #ffffff;">-</div>
+          </div>
+          <div>
+            <span style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Mobile Number</span>
+            <div id="detailApplicantMobile" style="font-weight: 600; color: var(--text-highlight);">-</div>
+          </div>
+          <div>
+            <span style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Selected Service</span>
+            <div id="detailApplicantService" style="font-weight: 600; color: #ffffff;">-</div>
+          </div>
+          <div>
+            <span style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Submission Date</span>
+            <div id="detailApplicantDate" style="color: var(--text-secondary);">-</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="detailStatusSelect" class="form-label required">Application Workflow Status</label>
+          <select id="detailStatusSelect" class="form-select">
+            <option value="Pending">Pending (Received at Center)</option>
+            <option value="Under Verification">Under Verification (Documents Checking)</option>
+            <option value="Processing">Processing (Portal Entry & Fee Payment)</option>
+            <option value="Completed">Completed (Slip / Certificate Ready)</option>
+            <option value="Action Required">Action Required (Applicant Must Visit/Contact)</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="detailPaymentSelect" class="form-label required">Payment Status</label>
+          <select id="detailPaymentSelect" class="form-select">
+            <option value="Unpaid">Unpaid</option>
+            <option value="Paid">Paid</option>
+            <option value="Partial">Partial</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="detailAdminNote" class="form-label">
+            Internal Private Admin Notes
+            <small style="color: var(--text-muted); font-weight: normal;">(Private to Center Staff)</small>
+          </label>
+          <textarea id="detailAdminNote" class="form-textarea" rows="3" placeholder="Add internal remarks, registration numbers, or required document follow-up..."></textarea>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button id="cancelAppModalBtn" class="btn btn-outline">Cancel</button>
+        <button id="saveAppModalBtn" class="btn btn-primary">Save Changes in Firestore</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Dynamic Service Creator / Editor -->
+  <div id="adminServiceModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 id="serviceModalTitle" class="modal-title">Add / Edit Service</h3>
+        <button id="closeServiceModalBtn" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;">
+        <input type="hidden" id="editServiceId">
+
+        <div class="form-group">
+          <label for="serviceNameInput" class="form-label required">Service Title</label>
+          <input type="text" id="serviceNameInput" class="form-input" placeholder="e.g. UPSC NDA Online Application" required>
+        </div>
+
+        <div class="form-group">
+          <label for="serviceCategorySelect" class="form-label required">Category</label>
+          <select id="serviceCategorySelect" class="form-select" required>
+            <option value="Government Jobs & Recruitment">Government Jobs & Recruitment</option>
+            <option value="College & School Admissions">College & School Admissions</option>
+            <option value="Identity & Legal">Identity & Legal</option>
+            <option value="Certificates">Certificates</option>
+            <option value="Banking & Bill Payments">Banking & Bill Payments</option>
+            <option value="Business Services">Business Services</option>
+            <option value="Other Online Services">Other Online Services</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="serviceShortDescInput" class="form-label required">Short Description</label>
+          <input type="text" id="serviceShortDescInput" class="form-input" placeholder="One sentence summary..." required>
+        </div>
+
+        <div class="form-group">
+          <label for="serviceFullDescInput" class="form-label required">Detailed Procedure Overview</label>
+          <textarea id="serviceFullDescInput" class="form-textarea" rows="3" placeholder="Full service explanation for service-details page..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="serviceDocsInput" class="form-label">Required Documents (Comma separated)</label>
+          <input type="text" id="serviceDocsInput" class="form-input" placeholder="10th Marksheet, Aadhaar Card, Photo, Signature">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="serviceFeeInput" class="form-label">Fee Note</label>
+            <input type="text" id="serviceFeeInput" class="form-input" placeholder="e.g. As per official notification">
+          </div>
+          <div class="form-group">
+            <label for="serviceTurnaroundInput" class="form-label">Turnaround Time</label>
+            <input type="text" id="serviceTurnaroundInput" class="form-input" placeholder="e.g. Same day counter processing">
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.5rem;">
+          <input type="checkbox" id="serviceActiveCheck" checked style="width: 18px; height: 18px;">
+          <label for="serviceActiveCheck" style="color: #ffffff; font-weight: 600; cursor: pointer;">
+            Service is Active &amp; Visible to Public
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelServiceModalBtn" class="btn btn-outline">Cancel</button>
+        <button id="saveServiceModalBtn" class="btn btn-primary">Save Service</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
